@@ -1,12 +1,14 @@
-#!/bin/bash -eux
+#!/bin/bash
 GROUP=plextmp
 
 mkdir -p /config/logs/supervisor
-chown -R plex: /config
+find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {}
 
 touch /supervisord.log
 touch /supervisord.pid
 chown plex: /supervisord.log /supervisord.pid
+
+# Get the proper group membership, credit to http://stackoverflow.com/a/28596874/249107
 
 TARGET_GID=$(stat -c "%g" /data)
 EXISTS=$(cat /etc/group | grep ${TARGET_GID} | wc -l)
