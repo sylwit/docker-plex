@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build --rm --no-cache -t timhaak/plex .
+docker build --rm -t timhaak/plex .

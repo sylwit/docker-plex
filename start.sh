@@ -3,9 +3,6 @@ set -x
 GROUP=plextmp
 
 mkdir -p /config/logs/supervisor
-if [[ -z "${SKIP_CHOWN_CONFIG}" ]]; then
-  find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {}
-fi
 
 touch /supervisord.log
 touch /supervisord.pid
@@ -24,7 +21,16 @@ else
   GROUP=$(getent group $TARGET_GID | cut -d: -f1)
   usermod -a -G ${GROUP} plex
 fi
+
 usermod -a -G ${GROUP} plex
+
+if [[ -z "${SKIP_CHOWN_CONFIG}" ]]; then
+  CHANGE_CONFIG_DIR_OWNERSHIP=false
+fi
+
+if [ "${CHANGE_CONFIG_DIR_OWNERSHIP}" = true ]; then
+  find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {}
+fi
 
 # Will change all files in directory to be readable by group
 if [ "${CHANGE_DIR_RIGHTS}" = true ]; then
@@ -34,7 +40,7 @@ fi
 
 # Current defaults to run as root while testing.
 if [ "${RUN_AS_ROOT}" = true ]; then
-  /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+  /usr/sbin/start_pms
 else
-  su plex -c "/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf"
+  sudo -u plex -E sh -c "/usr/sbin/start_pms"
 fi
