@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xu
+set -x
 GROUP=plextmp
 
 mkdir -p /config/logs/supervisor
