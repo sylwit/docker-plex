@@ -44,6 +44,8 @@ You will need to modify the auto-generated config file to allow connections from
 
 and adding ```allowedNetworks="192.168.1.0/255.255.255.0" ``` as a parameter in the <Preferences ...> section. (Or what ever your local range is)
 
+There is also an option of ```--env=SKIP_CHOWN_CONFIG=TRUE``` that will let the Plex server load faster by skipping the permissions check. You can insert this as such: ```docker run --env=SKIP_CHOWN_CONFIG=TRUE``` rest of command
+
 Start the docker instance again and it will stay as a daemon and listen on port 32400.
 
 Browse to: ```http://*ipaddress*:32400/web``` to run through the setup wizard.
