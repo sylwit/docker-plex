@@ -1,14 +1,8 @@
-# Git files
+.dockerignore
+.editorconfig
 .git
 .gitignore
-
-# Local config files
-.editorconfig
-
-#build files
-build.sh
-buildCache.sh
-
-# Information files
+.rockertmp*
 LICENSE
 README.md
+Rockerfile

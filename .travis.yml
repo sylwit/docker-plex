@@ -1,0 +1,14 @@
+sudo: required
+services:
+  - docker
+language: c
+env:
+  global:
+    - ROCKER_VERSION=1.0.1
+before_script:
+  - curl -L https://github.com/grammarly/rocker/releases/download/${ROCKER_VERSION}/rocker-${ROCKER_VERSION}_linux_amd64.tar.gz | sudo tar -C /usr/bin -xzf -
+script:
+  - if [[ "${TRAVIS_BRANCH}" = "master" ]]; then
+      rocker build --var PLEXAPTLIST=wheezy --var PLEXMEDIASERVER_VERSION=`cat VERSION` --push --auth $DOCKER_USER:$DOCKER_PASS;
+      rocker build --var PLEXAPTLIST=plexpass --var PLEXMEDIASERVER_VERSION=`cat VERSION_PASS` --push --auth $DOCKER_USER:$DOCKER_PASS;
+    fi

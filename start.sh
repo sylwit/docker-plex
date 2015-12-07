@@ -1,6 +1,4 @@
-#!/bin/bash
-set -x
-GROUP=plextmp
+#!/bin/bash -x
 
 mkdir -p /config/logs/supervisor
 
@@ -9,9 +7,9 @@ touch /supervisord.pid
 chown plex: /supervisord.log /supervisord.pid
 
 # Get the proper group membership, credit to http://stackoverflow.com/a/28596874/249107
-
 TARGET_GID=$(stat -c "%g" /data)
 EXISTS=$(cat /etc/group | grep ${TARGET_GID} | wc -l)
+GROUP=plextmp
 
 # Create new group using target GID and add plex user
 if [ $EXISTS = "0" ]; then
@@ -19,7 +17,6 @@ if [ $EXISTS = "0" ]; then
 else
   # GID exists, find group name and add
   GROUP=$(getent group $TARGET_GID | cut -d: -f1)
-  usermod -a -G ${GROUP} plex
 fi
 
 usermod -a -G ${GROUP} plex

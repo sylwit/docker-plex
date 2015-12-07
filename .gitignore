@@ -11,3 +11,6 @@
 *~
 .directory
 .Trash-*
+
+# Rocker
+.rockertmp_*
