@@ -15,7 +15,7 @@ docker build -t timhaak/docker-plex .
 You can also obtain it via:
 
 ```
-docker pull timhaak/docker-plex
+docker pull timhaak/plex
 ```
 
 ---
