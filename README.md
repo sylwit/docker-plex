@@ -8,7 +8,7 @@ Build from docker file
 
 ```
 git clone git@github.com:timhaak/timhaak/docker-plex.git
-cd timhaak/docker-plex
+cd docker-plex
 docker build -t timhaak/plex .
 ```
 
