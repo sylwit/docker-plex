@@ -27,8 +27,6 @@ VOLUME ["/config","/data"]
 ADD ./start.sh /start.sh
 RUN chmod u+x  /start.sh
 
-ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 ENV RUN_AS_ROOT="true" \
     CHANGE_DIR_RIGHTS="false" \
     CHANGE_CONFIG_DIR_OWNERSHIP="true" \
