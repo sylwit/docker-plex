@@ -24,7 +24,7 @@ fi
 
 usermod -a -G ${GROUP} plex
 
-if [[ -z "${SKIP_CHOWN_CONFIG}" ]]; then
+if [[ -n "${SKIP_CHOWN_CONFIG}" ]]; then
   CHANGE_CONFIG_DIR_OWNERSHIP=false
 fi
 
