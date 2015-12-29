@@ -7,7 +7,7 @@ For the paid for plexpass version goto https://github.com/timhaak/docker-plexpas
 Build from docker file
 
 ```
-git clone git@github.com:timhaak/timhaak/docker-plex.git
+git clone git@github.com:timhaak/docker-plex.git
 cd docker-plex
 docker build -t timhaak/plex .
 ```
