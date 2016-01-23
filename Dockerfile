@@ -11,6 +11,8 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
     apt-get install -qy --force-yes \
       ca-certificates curl \
       openssl \
+      xmlstarlet \
+      curl \
       sudo \
     && \
     echo "deb http://shell.ninthgate.se/packages/debian wheezy main" > /etc/apt/sources.list.d/plexmediaserver.list && \
@@ -25,6 +27,7 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
 VOLUME ["/config","/data"]
 
 ADD ./start.sh /start.sh
+ADD ./Preferences.xml /Preferences.xml
 RUN chmod u+x  /start.sh
 
 ENV RUN_AS_ROOT="true" \
