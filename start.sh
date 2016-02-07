@@ -38,11 +38,18 @@ if [ "${CHANGE_DIR_RIGHTS}" = true ]; then
   chmod -R g+rX /data
 fi
 
-# Get plex token if PLEX_USERNAME and PLEX_PASSWORD are define
+
+if [ ! -f /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml ]; then
+  mkdir -p /config/Library/Application\ Support/Plex\ Media\ Server/
+  cp /Preferences.xml /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+fi
+  
+# Get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined
 [ "${PLEX_USERNAME}" ] && [ "${PLEX_PASSWORD}" ] && {
 
+  if [ ! $(xmlstarlet sel -T -t -m "/Preferences" -v "@PlexOnlineToken" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml) ]; then
   # Ask Plex.tv a token key
-  TOKEN=$(curl -u "${PLEX_USERNAME}":"${PLEX_PASSWORD}" 'https://plex.tv/users/sign_in.xml' \
+  PLEX_TOKEN=$(curl -u "${PLEX_USERNAME}":"${PLEX_PASSWORD}" 'https://plex.tv/users/sign_in.xml' \
     -X POST -H 'X-Plex-Device-Name: PlexMediaServer' \
     -H 'X-Plex-Provides: server' \
     -H 'X-Plex-Version: 0.9' \
@@ -51,21 +58,24 @@ fi
     -H 'X-Plex-Product: Plex Media Server'\
     -H 'X-Plex-Device: Linux'\
     -H 'X-Plex-Client-Identifier: XXXX' --compressed | sed -n 's/.*<authentication-token>\(.*\)<\/authentication-token>.*/\1/p')
-
-  if [ ! -f /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml ]; then
-    mkdir -p /config/Library/Application\ Support/Plex\ Media\ Server/
-    cp /Preferences.xml /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
   fi
-
-  if [ ! $(xmlstarlet sel -T -t -m "/Preferences" -v "@PlexOnlineToken" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml) ]; then
-    xmlstarlet ed --inplace --insert "Preferences" --type attr -n PlexOnlineToken -v ${TOKEN} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
-  fi
-
-  if [ "${PLEX_EXTERNALPORT}" ]; then
-    xmlstarlet ed --inplace --insert "Preferences" --type attr -n ManualPortMappingPort -v ${PLEX_EXTERNALPORT} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
-  fi
-
 }
+
+if [ "${PLEX_TOKEN}" ]; then
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n PlexOnlineToken -v ${PLEX_TOKEN} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+fi
+
+if [ "${PLEX_EXTERNALPORT}" ]; then
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n ManualPortMappingPort -v ${PLEX_EXTERNALPORT} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+fi
+
+if [ "${PLEX_DISABLE_SECURITY}" ]; then
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n disableRemoteSecurity -v ${PLEX_DISABLE_SECURITY} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+fi
+
+if [ "${PLEX_ALLOWED_NETWORKS}" ]; then
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n allowedNetworks -v ${PLEX_ALLOWED_NETWORKS} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+fi
 
 #remove previous pid if it exists
 rm ~/Library/Application\ Support/Plex\ Media\ Server/plexmediaserver.pid
