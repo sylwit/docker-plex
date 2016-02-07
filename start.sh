@@ -67,6 +67,8 @@ fi
 
 }
 
+#remove previous pid if it exists
+rm ~/Library/Application\ Support/Plex\ Media\ Server/plexmediaserver.pid
 
 # Current defaults to run as root while testing.
 if [ "${RUN_AS_ROOT}" = true ]; then
