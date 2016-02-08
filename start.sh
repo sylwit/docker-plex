@@ -45,6 +45,7 @@ if [ ! -f /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.x
 fi
   
 # Get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined
+# If not set, you will have to link your account to the Plex Media Server in Settings > Server
 [ "${PLEX_USERNAME}" ] && [ "${PLEX_PASSWORD}" ] && {
 
   if [ ! $(xmlstarlet sel -T -t -m "/Preferences" -v "@PlexOnlineToken" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml) ]; then
@@ -65,17 +66,23 @@ if [ "${PLEX_TOKEN}" ]; then
   xmlstarlet ed --inplace --insert "Preferences" --type attr -n PlexOnlineToken -v ${PLEX_TOKEN} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
 
+# Tells Plex the external port is not "32400" but something else.
+# Useful if you run multiple Plex instances on the same IP
 if [ "${PLEX_EXTERNALPORT}" ]; then
   xmlstarlet ed --inplace --insert "Preferences" --type attr -n ManualPortMappingPort -v ${PLEX_EXTERNALPORT} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
 
+# Allow disabling the remote security (hidding the Server tab in Settings)
 if [ "${PLEX_DISABLE_SECURITY}" ]; then
   xmlstarlet ed --inplace --insert "Preferences" --type attr -n disableRemoteSecurity -v ${PLEX_DISABLE_SECURITY} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
 
-if [ "${PLEX_ALLOWED_NETWORKS}" ]; then
-  xmlstarlet ed --inplace --insert "Preferences" --type attr -n allowedNetworks -v ${PLEX_ALLOWED_NETWORKS} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+# Detect networks and add them to the allowed list of networks
+if [ -z "${PLEX_ALLOWED_NETWORKS}" ]; then
+  PLEX_ALLOWED_NETWORKS=$(ip route | grep "/" | awk '{print $1}' | paste -sd "," -)
 fi
+
+xmlstarlet ed --inplace --insert "Preferences" --type attr -n allowedNetworks -v ${PLEX_ALLOWED_NETWORKS} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 
 #remove previous pid if it exists
 rm ~/Library/Application\ Support/Plex\ Media\ Server/plexmediaserver.pid
