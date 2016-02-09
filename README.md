@@ -43,7 +43,7 @@ The first time it runs, it will initialize the config directory and terminate. (
 
 
 | Name                  |  Values              | Behaviour                                                                           |
-| :---------------------|:--------------------:| -----------------------------------------------------------------------------------:|
+| ---------------------:|:--------------------:| :-----------------------------------------------------------------------------------|
 | SKIP_CHOWN_CONFIG     | `TRUE` or `FALSE`    | Startup will be faster and there won't be a permissions check for the configuration |
 | PLEX_USERNAME         | String               | Will add this Plex Media Server to that account                                     |
 | PLEX_PASSWORD         | String               | (Mandatory if username is set) The account password                                 |
@@ -53,6 +53,15 @@ The first time it runs, it will initialize the config directory and terminate. (
 | RUN_AS_ROOT           | `TRUE` or `FALSE`    | *Dangerous* If true, will start Plex as root                                        |
 | PLEX_ALLOWED_NETWORKS | Comma-separated list | List of networks to allow access to. Defaults to the docker network (public Plex)   |
 
+
+To use an option, set it as a Docker environment variable : 
+
+Example:
+```
+docker run -e RUN_AS_ROOT=TRUE ... timhaak/plex
+```
+
+--- 
 
 Start the docker instance again and it will stay as a daemon and listen on port 32400.
 
