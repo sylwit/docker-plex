@@ -9,7 +9,8 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
     apt-get -q update && \
     apt-get -qy --force-yes dist-upgrade && \
     apt-get install -qy --force-yes \
-      ca-certificates curl \
+      iproute2 \
+      ca-certificates \
       openssl \
       xmlstarlet \
       curl \
@@ -38,4 +39,3 @@ ENV RUN_AS_ROOT="true" \
 EXPOSE 32400
 
 CMD ["/start.sh"]
-
