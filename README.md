@@ -38,14 +38,35 @@ docker run --restart=always -d --name plex --net="host" -h *your_host_name* -v /
 
 The first time it runs, it will initialize the config directory and terminate. (This most likely won't happen if you've used the --net="host")
 
-You will need to modify the auto-generated config file to allow connections from your local IP range (This should not be needed if you've used the --net="host"). This can be done by modifying the file:
 
-*your_config_location*/Library/Application Support/Plex Media Server/Preferences.xml
+# Options
 
-and adding ```allowedNetworks="192.168.1.0/255.255.255.0" ``` as a parameter in the <Preferences ...> section. (Or what ever your local range is)
 
-There is also an option of ```--env=SKIP_CHOWN_CONFIG=TRUE``` that will let the Plex server load faster by skipping the permissions check. You can insert this as such: ```docker run --env=SKIP_CHOWN_CONFIG=TRUE``` rest of command
+| Name                  |  Values              | Behaviour                                                                           |
+| ---------------------:|:--------------------:| :-----------------------------------------------------------------------------------|
+| SKIP_CHOWN_CONFIG     | `TRUE` or `FALSE`    | Startup will be faster and there won't be a permissions check for the configuration |
+| PLEX_USERNAME         | String               | Will add this Plex Media Server to that account                                     |
+| PLEX_PASSWORD         | String               | (Mandatory if username is set) The account password                                 |
+| PLEX_TOKEN            | [Plex token][1]      | Plex token if you don't want to write your password                                 |
+| PLEX_EXTERNALPORT     | Integer              | The port if you're not using the default one (32400), ie. when using `-p 80:34200`  |
+| PLEX_DISABLE_SECURITY | `0` or `1`           | If set to 1, the remote security will be disabled                                   |
+| RUN_AS_ROOT           | `TRUE` or `FALSE`    | *Dangerous* If true, will start Plex as root                                        |
+| PLEX_ALLOWED_NETWORKS | Comma-separated list | List of networks to allow access to. Defaults to the docker network (public Plex)   |
+
+
+To use an option, set it as a Docker environment variable : 
+
+Example:
+```
+docker run -e RUN_AS_ROOT=TRUE ... timhaak/plex
+```
+
+--- 
 
 Start the docker instance again and it will stay as a daemon and listen on port 32400.
 
 Browse to: ```http://*ipaddress*:32400/web``` to run through the setup wizard.
+
+
+
+[1]: https://support.plex.tv/hc/en-us/articles/204059436-Finding-your-account-token-X-Plex-Token
