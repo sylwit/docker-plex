@@ -11,18 +11,18 @@ chown plex: /supervisord.log /supervisord.pid
 # Get the proper group membership, credit to http://stackoverflow.com/a/28596874/249107
 
 TARGET_GID=$(stat -c "%g" /data)
-EXISTS=$(cat /etc/group | grep ${TARGET_GID} | wc -l)
+EXISTS=$(cat /etc/group | grep "${TARGET_GID}" | wc -l)
 
 # Create new group using target GID and add plex user
-if [ $EXISTS = "0" ]; then
-  groupadd --gid ${TARGET_GID} ${GROUP}
+if [ "$EXISTS" = "0" ]; then
+  groupadd --gid "${TARGET_GID}" "${GROUP}"
 else
   # GID exists, find group name and add
-  GROUP=$(getent group $TARGET_GID | cut -d: -f1)
-  usermod -a -G ${GROUP} plex
+  GROUP=$(getent group "$TARGET_GID" | cut -d: -f1)
+  usermod -a -G "${GROUP}" plex
 fi
 
-usermod -a -G ${GROUP} plex
+usermod -a -G "${GROUP}" plex
 
 if [[ -n "${SKIP_CHOWN_CONFIG}" ]]; then
   CHANGE_CONFIG_DIR_OWNERSHIP=false
@@ -34,7 +34,7 @@ fi
 
 # Will change all files in directory to be readable by group
 if [ "${CHANGE_DIR_RIGHTS}" = true ]; then
-  chgrp -R ${GROUP} /data
+  chgrp -R "${GROUP}" /data
   chmod -R g+rX /data
 fi
 
@@ -63,18 +63,18 @@ fi
 }
 
 if [ "${PLEX_TOKEN}" ]; then
-  xmlstarlet ed --inplace --insert "Preferences" --type attr -n PlexOnlineToken -v ${PLEX_TOKEN} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n PlexOnlineToken -v "${PLEX_TOKEN}" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
 
 # Tells Plex the external port is not "32400" but something else.
 # Useful if you run multiple Plex instances on the same IP
 if [ "${PLEX_EXTERNALPORT}" ]; then
-  xmlstarlet ed --inplace --insert "Preferences" --type attr -n ManualPortMappingPort -v ${PLEX_EXTERNALPORT} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n ManualPortMappingPort -v "${PLEX_EXTERNALPORT}" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
 
 # Allow disabling the remote security (hidding the Server tab in Settings)
 if [ "${PLEX_DISABLE_SECURITY}" ]; then
-  xmlstarlet ed --inplace --insert "Preferences" --type attr -n disableRemoteSecurity -v ${PLEX_DISABLE_SECURITY} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n disableRemoteSecurity -v "${PLEX_DISABLE_SECURITY}" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
 
 # Detect networks and add them to the allowed list of networks
@@ -82,7 +82,7 @@ if [ -z "${PLEX_ALLOWED_NETWORKS}" ]; then
   PLEX_ALLOWED_NETWORKS=$(ip route | grep "/" | awk '{print $1}' | paste -sd "," -)
 fi
 if [ -n "${PLEX_ALLOWED_NETWORKS}" ]; then
-  xmlstarlet ed --inplace --insert "Preferences" --type attr -n allowedNetworks -v ${PLEX_ALLOWED_NETWORKS} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n allowedNetworks -v "${PLEX_ALLOWED_NETWORKS}" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
 
 #remove previous pid if it exists
