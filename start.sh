@@ -43,7 +43,7 @@ if [ ! -f /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.x
   mkdir -p /config/Library/Application\ Support/Plex\ Media\ Server/
   cp /Preferences.xml /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
 fi
-  
+
 # Get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined
 # If not set, you will have to link your account to the Plex Media Server in Settings > Server
 [ "${PLEX_USERNAME}" ] && [ "${PLEX_PASSWORD}" ] && {
@@ -81,8 +81,9 @@ fi
 if [ -z "${PLEX_ALLOWED_NETWORKS}" ]; then
   PLEX_ALLOWED_NETWORKS=$(ip route | grep "/" | awk '{print $1}' | paste -sd "," -)
 fi
-
-xmlstarlet ed --inplace --insert "Preferences" --type attr -n allowedNetworks -v ${PLEX_ALLOWED_NETWORKS} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+if [ -n "${PLEX_ALLOWED_NETWORKS}" ]; then
+  xmlstarlet ed --inplace --insert "Preferences" --type attr -n allowedNetworks -v ${PLEX_ALLOWED_NETWORKS} /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+fi
 
 #remove previous pid if it exists
 rm ~/Library/Application\ Support/Plex\ Media\ Server/plexmediaserver.pid
