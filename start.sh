@@ -28,12 +28,12 @@ if [[ -n "${SKIP_CHOWN_CONFIG}" ]]; then
   CHANGE_CONFIG_DIR_OWNERSHIP=false
 fi
 
-if [ "${CHANGE_CONFIG_DIR_OWNERSHIP}" = true ]; then
+if [ "${CHANGE_CONFIG_DIR_OWNERSHIP,,}" = "true" ]; then
   find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {}
 fi
 
 # Will change all files in directory to be readable by group
-if [ "${CHANGE_DIR_RIGHTS}" = true ]; then
+if [ "${CHANGE_DIR_RIGHTS,,}" = "true" ]; then
   chgrp -R ${GROUP} /data
   chmod -R g+rX /data
 fi
@@ -89,7 +89,7 @@ fi
 rm ~/Library/Application\ Support/Plex\ Media\ Server/plexmediaserver.pid
 
 # Current defaults to run as root while testing.
-if [ "${RUN_AS_ROOT}" = true ]; then
+if [ "${RUN_AS_ROOT,,}" = "true" ]; then
   /usr/sbin/start_pms
 else
   sudo -u plex -E sh -c "/usr/sbin/start_pms"
