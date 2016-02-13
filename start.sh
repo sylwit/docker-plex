@@ -24,7 +24,7 @@ fi
 
 usermod -a -G ${GROUP} plex
 
-if [[ -n "${SKIP_CHOWN_CONFIG}" ]]; then
+if [ -n "${SKIP_CHOWN_CONFIG}" ]; then
   CHANGE_CONFIG_DIR_OWNERSHIP=false
 fi
 
@@ -46,7 +46,7 @@ fi
 
 # Get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined
 # If not set, you will have to link your account to the Plex Media Server in Settings > Server
-[ "${PLEX_USERNAME}" ] && [ "${PLEX_PASSWORD}" ] && {
+[ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && {
 
   if [ -n "$(xmlstarlet sel -T -t -m "/Preferences" -v "@PlexOnlineToken" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml)" ]; then
   # Ask Plex.tv a token key
@@ -70,18 +70,18 @@ function setConfig(){
   fi
 }
 
-if [ "${PLEX_TOKEN}" ]; then
+if [ -n "${PLEX_TOKEN}" ]; then
   setConfig PlexOnlineToken ${PLEX_TOKEN}
 fi
 
 # Tells Plex the external port is not "32400" but something else.
 # Useful if you run multiple Plex instances on the same IP
-if [ "${PLEX_EXTERNALPORT}" ]; then
+if [ -n "${PLEX_EXTERNALPORT}" ]; then
   setConfig ManualPortMappingPort ${PLEX_EXTERNALPORT}
 fi
 
 # Allow disabling the remote security (hidding the Server tab in Settings)
-if [ "${PLEX_DISABLE_SECURITY}" ]; then
+if [ -n "${PLEX_DISABLE_SECURITY}" ]; then
   setConfig disableRemoteSecurity ${PLEX_DISABLE_SECURITY}
 fi
 
