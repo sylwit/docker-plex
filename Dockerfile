@@ -30,7 +30,6 @@ ENV HOME="/config"
 
 ADD ./start.sh /start.sh
 ADD ./Preferences.xml /Preferences.xml
-RUN chmod u+x  /start.sh
 
 EXPOSE 32400
 
