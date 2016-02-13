@@ -64,9 +64,9 @@ fi
 
 function setConfig(){
   if [ -z "$(xmlstarlet sel -T -t -m "/Preferences" -v "@$1" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml)" ]; then
-    xmlstarlet ed --inplace --insert "Preferences" --type attr -n $1 -v $2 /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+    xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$1" -v "$2" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
   else
-    xmlstarlet ed --inplace --update "/Preferences[@$1]" -v $2 /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+    xmlstarlet ed --inplace --update "/Preferences[@$1]" -v "$2" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
   fi
 }
 
