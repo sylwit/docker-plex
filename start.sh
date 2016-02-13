@@ -1,5 +1,10 @@
 #!/bin/bash
-set -x
+
+# If debug mode, then enable xtrace
+if [ "${DEBUG,,}" = "true" ]; then
+  set -x
+fi
+
 GROUP=plextmp
 
 mkdir -p /config/logs/supervisor
