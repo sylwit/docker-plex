@@ -86,9 +86,7 @@ if [ "${PLEX_DISABLE_SECURITY}" ]; then
 fi
 
 # Detect networks and add them to the allowed list of networks
-if [ -z "${PLEX_ALLOWED_NETWORKS}" ]; then
-  PLEX_ALLOWED_NETWORKS=$(ip route | grep "/" | awk '{print $1}' | paste -sd "," -)
-fi
+PLEX_ALLOWED_NETWORKS=${PLEX_ALLOWED_NETWORKS:-$(ip route | grep "/" | awk '{print $1}' | paste -sd "," -)}
 if [ -n "${PLEX_ALLOWED_NETWORKS}" ]; then
   setConfig allowedNetworks ${PLEX_ALLOWED_NETWORKS}
 fi
