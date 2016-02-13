@@ -26,15 +26,11 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
     rm -rf /tmp/*
 
 VOLUME ["/config","/data"]
+ENV HOME="/config"
 
 ADD ./start.sh /start.sh
 ADD ./Preferences.xml /Preferences.xml
 RUN chmod u+x  /start.sh
-
-ENV RUN_AS_ROOT="true" \
-    CHANGE_DIR_RIGHTS="false" \
-    CHANGE_CONFIG_DIR_OWNERSHIP="true" \
-    HOME="/config"
 
 EXPOSE 32400
 
