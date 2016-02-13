@@ -46,9 +46,8 @@ fi
 
 # Get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined
 # If not set, you will have to link your account to the Plex Media Server in Settings > Server
-[ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && {
-
-  if [ -n "$(xmlstarlet sel -T -t -m "/Preferences" -v "@PlexOnlineToken" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml)" ]; then
+if [ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] \
+  && [ -n "$(xmlstarlet sel -T -t -m "/Preferences" -v "@PlexOnlineToken" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml)" ]; then
   # Ask Plex.tv a token key
   PLEX_TOKEN=$(curl -u "${PLEX_USERNAME}":"${PLEX_PASSWORD}" 'https://plex.tv/users/sign_in.xml' \
     -X POST -H 'X-Plex-Device-Name: PlexMediaServer' \
@@ -59,8 +58,7 @@ fi
     -H 'X-Plex-Product: Plex Media Server'\
     -H 'X-Plex-Device: Linux'\
     -H 'X-Plex-Client-Identifier: XXXX' --compressed | sed -n 's/.*<authentication-token>\(.*\)<\/authentication-token>.*/\1/p')
-  fi
-}
+fi
 
 function setConfig(){
   if [ -z "$(xmlstarlet sel -T -t -m "/Preferences" -v "@$1" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml)" ]; then
