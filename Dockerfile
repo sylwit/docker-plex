@@ -28,9 +28,9 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
 VOLUME ["/config","/data"]
 ENV HOME="/config"
 
-ADD ./start.sh /start.sh
-ADD ./Preferences.xml /Preferences.xml
-
 EXPOSE 32400
+
+ADD ./Preferences.xml /Preferences.xml
+ADD ./start.sh /start.sh
 
 CMD ["/start.sh"]
