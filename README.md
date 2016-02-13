@@ -36,7 +36,7 @@ docker rm -f plex
 docker run --restart=always -d --name plex --net="host" -h *your_host_name* -v /*your_config_location*:/config -v /*your_videos_location*:/data timhaak/plex
 ```
 
-The first time it runs, it will initialize the config directory and terminate. (This most likely won't happen if you've used the --net="host")
+The first time it runs, it will initialize the config directory.
 
 
 # Options
