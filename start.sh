@@ -82,20 +82,15 @@ fi
 
 # Tells Plex the external port is not "32400" but something else.
 # Useful if you run multiple Plex instances on the same IP
-if [ -n "${PLEX_EXTERNALPORT}" ]; then
-  setPreference ManualPortMappingPort ${PLEX_EXTERNALPORT}
-fi
+[ -n "${PLEX_EXTERNALPORT}" ] && setPreference ManualPortMappingPort ${PLEX_EXTERNALPORT}
 
 # Allow disabling the remote security (hidding the Server tab in Settings)
-if [ -n "${PLEX_DISABLE_SECURITY}" ]; then
-  setPreference disableRemoteSecurity ${PLEX_DISABLE_SECURITY}
-fi
+[ -n "${PLEX_DISABLE_SECURITY}" ] && setPreference disableRemoteSecurity ${PLEX_DISABLE_SECURITY}
 
 # Detect networks and add them to the allowed list of networks
 PLEX_ALLOWED_NETWORKS=${PLEX_ALLOWED_NETWORKS:-$(ip route | grep '/' | awk '{print $1}' | paste -sd "," -)}
-if [ -n "${PLEX_ALLOWED_NETWORKS}" ]; then
-  setPreference allowedNetworks ${PLEX_ALLOWED_NETWORKS}
-fi
+[ -n "${PLEX_ALLOWED_NETWORKS}" ]; && setPreference allowedNetworks ${PLEX_ALLOWED_NETWORKS}
+
 
 # Remove previous pid if it exists
 rm "${PLEX_PID}"
