@@ -45,14 +45,17 @@ PLEX_PREFERENCES="${PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR}/Plex Media Server
 PLEX_PID="${PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR}/Plex Media Server/plexmediaserver.pid"
 
 getPreference(){
-  xmlstarlet sel -T -t -m "/Preferences" -v "@$1" -n "${PLEX_PREFERENCES}"
+  local preference_key="$1"
+  xmlstarlet sel -T -t -m "/Preferences" -v "@$preference_key" -n "${PLEX_PREFERENCES}"
 }
 
 setPreference(){
-  if [ -z "$(getPreference "$1")" ]; then
-    xmlstarlet ed --inplace --insert "Preferences" --type attr -n $1 -v $2 ${PLEX_PREFERENCES}
+  local preference_key="$1"
+  local preference_val="$2"
+  if [ -z "$(getPreference "$preference_key")" ]; then
+    xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$preference_key" -v "$preference_val" ${PLEX_PREFERENCES}
   else
-    xmlstarlet ed --inplace --update "/Preferences[@$1]" -v "$2" "${PLEX_PREFERENCES}"
+    xmlstarlet ed --inplace --update "/Preferences[@$preference_key]" -v "$preference_val" "${PLEX_PREFERENCES}"
   fi
 }
 
