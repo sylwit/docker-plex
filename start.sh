@@ -1,5 +1,8 @@
 #!/bin/bash
-set -x
+# If debug mode, then enable xtrace
+if [ "${DEBUG,,}" = "true" ]; then
+  set -x
+fi
 
 # Set the defaults
 RUN_AS_ROOT=${RUN_AS_ROOT:-true}
