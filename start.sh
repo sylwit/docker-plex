@@ -1,5 +1,11 @@
 #!/bin/bash
 set -x
+
+# Set the defaults
+RUN_AS_ROOT=${RUN_AS_ROOT:-true}
+CHANGE_DIR_RIGHTS=${CHANGE_DIR_RIGHTS:-false}
+CHANGE_CONFIG_DIR_OWNERSHIP=${CHANGE_CONFIG_DIR_OWNERSHIP:-true}
+
 GROUP=plextmp
 
 mkdir -p /config/logs/supervisor
