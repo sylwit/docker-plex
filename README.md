@@ -2,7 +2,7 @@
 
 This is a Dockerfile to set up (https://plex.tv/ "Plex Media Server") - (https://plex.tv/)
 
-If you've have paid for plexpass goto https://github.com/timhaak/docker-plexpass
+If you have paid for plexpass goto https://github.com/timhaak/docker-plexpass
 
 Build from docker file
 
