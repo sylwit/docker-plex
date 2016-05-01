@@ -68,11 +68,10 @@ setPreference(){
   fi
 }
 
-if [ ! -f ${PLEX_PREFERENCES} ]; then
+if [ ! -f "${PLEX_PREFERENCES}" ]; then
   mkdir -p $(dirname ${PLEX_PREFERENCES})
   cp /Preferences.xml ${PLEX_PREFERENCES}
 fi
-
 
 # Set the PlexOnlineToken to PLEX_TOKEN if defined,
 # otherwise get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined,
