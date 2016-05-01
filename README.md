@@ -2,7 +2,7 @@
 
 This is a Dockerfile to set up (https://plex.tv/ "Plex Media Server") - (https://plex.tv/)
 
-For the paid for plexpass version goto https://github.com/timhaak/docker-plexpass
+If you have paid for plexpass goto https://github.com/timhaak/docker-plexpass
 
 Build from docker file
 
@@ -54,14 +54,14 @@ The first time it runs, it will initialize the config directory.
 | PLEX_ALLOWED_NETWORKS | Comma-separated list | List of networks to allow access to. Defaults to the docker network (public Plex)   |
 
 
-To use an option, set it as a Docker environment variable : 
+To use an option, set it as a Docker environment variable :
 
 Example:
 ```
 docker run -e RUN_AS_ROOT=TRUE ... timhaak/plex
 ```
 
---- 
+---
 
 Start the docker instance again and it will stay as a daemon and listen on port 32400.
 
