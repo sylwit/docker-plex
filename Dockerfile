@@ -17,7 +17,7 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
       sudo \
     && \
     echo "deb http://shell.ninthgate.se/packages/debian wheezy main" > /etc/apt/sources.list.d/plexmediaserver.list && \
-    curl http://shell.ninthgate.se/packages/shell-ninthgate-se-keyring.key | apt-key add - && \
+    curl http://shell.ninthgate.se/packages/shell.nintghate.se.gpg.key | apt-key add - && \
     apt-get -q update && \
     apt-get install -qy --force-yes plexmediaserver && \
     apt-get -y autoremove && \
