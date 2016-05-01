@@ -30,7 +30,8 @@ VOLUME ["/config","/data"]
 ENV RUN_AS_ROOT="true" \
     CHANGE_DIR_RIGHTS="false" \
     CHANGE_CONFIG_DIR_OWNERSHIP="true" \
-    HOME="/config"
+    HOME="/config" \
+    PLEX_DISABLE_SECURITY=1
 
 EXPOSE 32400
 

@@ -62,7 +62,7 @@ setPreference(){
   local preference_key="$1"
   local preference_val="$2"
   if [ -z "$(getPreference "$preference_key")" ]; then
-    xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$preference_key" -v "$preference_val" ${PLEX_PREFERENCES}
+    xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$preference_key" -v "$preference_val" "${PLEX_PREFERENCES}"
   else
     xmlstarlet ed --inplace --update "/Preferences[@$preference_key]" -v "$preference_val" "${PLEX_PREFERENCES}"
   fi
@@ -89,14 +89,13 @@ elif [ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && [ -n "$(getPrefer
     -H 'X-Plex-Product: Plex Media Server'\
     -H 'X-Plex-Device: Linux'\
     -H 'X-Plex-Client-Identifier: XXXX' --compressed | sed -n 's/.*<authentication-token>\(.*\)<\/authentication-token>.*/\1/p')
-  fi
-}
+fi
 
 function setConfig(){
   if [ -z "$(xmlstarlet sel -T -t -m "/Preferences" -v "@$1" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml)" ]; then
-    xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$1" -v "$2" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+    xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$1" -v "$2" "/config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml"
   else
-    xmlstarlet ed --inplace --update "/Preferences[@$1]" -v "$2" /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml
+    xmlstarlet ed --inplace --update "/Preferences[@$1]" -v "$2" "/config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml"
   fi
 }
 
@@ -106,14 +105,14 @@ fi
 
 # Tells Plex the external port is not "32400" but something else.
 # Useful if you run multiple Plex instances on the same IP
-[ -n "${PLEX_EXTERNALPORT}" ] && setPreference ManualPortMappingPort ${PLEX_EXTERNALPORT}
+[ -n "${PLEX_EXTERNALPORT}" ] && setPreference ManualPortMappingPort "${PLEX_EXTERNALPORT}"
 
 # Allow disabling the remote security (hidding the Server tab in Settings)
-[ -n "${PLEX_DISABLE_SECURITY}" ] && setPreference disableRemoteSecurity ${PLEX_DISABLE_SECURITY}
+[ -n "${PLEX_DISABLE_SECURITY}" ] && setPreference disableRemoteSecurity "${PLEX_DISABLE_SECURITY}"
 
 # Detect networks and add them to the allowed list of networks
 PLEX_ALLOWED_NETWORKS=${PLEX_ALLOWED_NETWORKS:-$(ip route | grep '/' | awk '{print $1}' | paste -sd "," -)}
-[ -n "${PLEX_ALLOWED_NETWORKS}" ]; && setPreference allowedNetworks ${PLEX_ALLOWED_NETWORKS}
+[ -n "${PLEX_ALLOWED_NETWORKS}" ] && setPreference allowedNetworks "${PLEX_ALLOWED_NETWORKS}"
 
 
 # Remove previous pid if it exists
