@@ -69,16 +69,23 @@ setPreference(){
 }
 
 if [ ! -f "${PLEX_PREFERENCES}" ]; then
-  mkdir -p $(dirname ${PLEX_PREFERENCES})
-  cp /Preferences.xml ${PLEX_PREFERENCES}
+  mkdir -p "$(dirname "${PLEX_PREFERENCES}")"
+  ls -la "$(dirname "${PLEX_PREFERENCES}")"
+  PLEX_PREFERENCES_DIR=$(dirname "${PLEX_PREFERENCES}")
+  cp /Preferences.xml "${PLEX_PREFERENCES}"
 fi
+ 
+ls -la "$(dirname "${PLEX_PREFERENCES}")"
 
 # Set the PlexOnlineToken to PLEX_TOKEN if defined,
 # otherwise get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined,
 # otherwise account must be manually linked via Plex Media Server in Settings > Server
+echo "PLEX_TOKEN :"${PLEX_TOKEN}
+echo "PLEX_USERNAME :"${PLEX_USERNAME}
+echo "PLEX_PASSWORD :"${PLEX_PASSWORD}
 if [ -n "${PLEX_TOKEN}" ]; then
   setPreference PlexOnlineToken ${PLEX_TOKEN}
-elif [ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && [ -n "$(getPreference "PlexOnlineToken")" ]; then
+elif [ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && [ -z "$(getPreference "PlexOnlineToken")" ]; then
   # Ask Plex.tv a token key
   PLEX_TOKEN=$(curl -u "${PLEX_USERNAME}":"${PLEX_PASSWORD}" 'https://plex.tv/users/sign_in.xml' \
     -X POST -H 'X-Plex-Device-Name: PlexMediaServer' \
@@ -91,16 +98,12 @@ elif [ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && [ -n "$(getPrefer
     -H 'X-Plex-Client-Identifier: XXXX' --compressed | sed -n 's/.*<authentication-token>\(.*\)<\/authentication-token>.*/\1/p')
 fi
 
-function setConfig(){
-  if [ -z "$(xmlstarlet sel -T -t -m "/Preferences" -v "@$1" -n /config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml)" ]; then
-    xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$1" -v "$2" "/config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml"
-  else
-    xmlstarlet ed --inplace --update "/Preferences[@$1]" -v "$2" "/config/Library/Application\ Support/Plex\ Media\ Server/Preferences.xml"
-  fi
-}
+echo "AFTER PLEX_TOKEN :"${PLEX_TOKEN}
+echo "PLEX_USERNAME :"${PLEX_USERNAME}
+echo "PLEX_PASSWORD :"${PLEX_PASSWORD}
 
 if [ "${PLEX_TOKEN}" ]; then
-  setConfig PlexOnlineToken "${PLEX_TOKEN}"
+  setPreference PlexOnlineToken "${PLEX_TOKEN}"
 fi
 
 # Tells Plex the external port is not "32400" but something else.
