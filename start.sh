@@ -11,12 +11,6 @@ CHANGE_CONFIG_DIR_OWNERSHIP=${CHANGE_CONFIG_DIR_OWNERSHIP:-true}
 
 GROUP=plextmp
 
-mkdir -p /config/logs/supervisor
-
-touch /supervisord.log
-touch /supervisord.pid
-chown plex: /supervisord.log /supervisord.pid
-
 # Get the proper group membership, credit to http://stackoverflow.com/a/28596874/249107
 
 TARGET_GID=$(stat -c "%g" /data)
