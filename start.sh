@@ -12,9 +12,8 @@ CHANGE_CONFIG_DIR_OWNERSHIP=${CHANGE_CONFIG_DIR_OWNERSHIP:-true}
 GROUP=plextmp
 
 # Get the proper group membership, credit to http://stackoverflow.com/a/28596874/249107
-
 TARGET_GID=$(stat -c "%g" /data)
-EXISTS=$(cat /etc/group | grep "${TARGET_GID}" | wc -l)
+EXISTS=$(getent group "${TARGET_GID}" | wc -l)
 
 # Create new group using target GID and add plex user
 if [ "$EXISTS" = "0" ]; then
@@ -22,7 +21,6 @@ if [ "$EXISTS" = "0" ]; then
 else
   # GID exists, find group name and add
   GROUP=$(getent group "$TARGET_GID" | cut -d: -f1)
-  usermod -a -G "${GROUP}" plex
 fi
 
 usermod -a -G "${GROUP}" plex
@@ -64,12 +62,8 @@ setPreference(){
 
 if [ ! -f "${PLEX_PREFERENCES}" ]; then
   mkdir -p "$(dirname "${PLEX_PREFERENCES}")"
-  ls -la "$(dirname "${PLEX_PREFERENCES}")"
-  PLEX_PREFERENCES_DIR=$(dirname "${PLEX_PREFERENCES}")
   cp /Preferences.xml "${PLEX_PREFERENCES}"
 fi
- 
-ls -la "$(dirname "${PLEX_PREFERENCES}")"
 
 # Set the PlexOnlineToken to PLEX_TOKEN if defined,
 # otherwise get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined,
@@ -113,7 +107,7 @@ PLEX_ALLOWED_NETWORKS=${PLEX_ALLOWED_NETWORKS:-$(ip route | grep '/' | awk '{pri
 
 
 # Remove previous pid if it exists
-rm "${PLEX_PID}"
+rm -f "${PLEX_PID}"
 
 # Current defaults to run as root while testing.
 if [ "${RUN_AS_ROOT,,}" = "true" ]; then
