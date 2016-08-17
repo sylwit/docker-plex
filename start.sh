@@ -9,34 +9,34 @@ RUN_AS_ROOT=${RUN_AS_ROOT:-true}
 CHANGE_DIR_RIGHTS=${CHANGE_DIR_RIGHTS:-false}
 CHANGE_CONFIG_DIR_OWNERSHIP=${CHANGE_CONFIG_DIR_OWNERSHIP:-true}
 
-GROUP=plextmp
+if [ "$(id -u)" -eq 0 -a "$(id -g)" -eq 0 ]; then
+  GROUP=plextmp
+  TARGET_GID=$(stat -c "%g" /data)
+  EXISTS=$(getent group "${TARGET_GID}" | wc -l)
 
-# Get the proper group membership, credit to http://stackoverflow.com/a/28596874/249107
-TARGET_GID=$(stat -c "%g" /data)
-EXISTS=$(getent group "${TARGET_GID}" | wc -l)
+  # Create new group using target GID and add plex user
+  if [ "$EXISTS" = "0" ]; then
+    groupadd --gid "${TARGET_GID}" "${GROUP}"
+  else
+    # GID exists, find group name and add
+    GROUP=$(getent group "$TARGET_GID" | cut -d: -f1)
+  fi
 
-# Create new group using target GID and add plex user
-if [ "$EXISTS" = "0" ]; then
-  groupadd --gid "${TARGET_GID}" "${GROUP}"
-else
-  # GID exists, find group name and add
-  GROUP=$(getent group "$TARGET_GID" | cut -d: -f1)
-fi
+  usermod -a -G "${GROUP}" plex
 
-usermod -a -G "${GROUP}" plex
+  if [[ -n "${SKIP_CHOWN_CONFIG}" ]]; then
+    CHANGE_CONFIG_DIR_OWNERSHIP=false
+  fi
 
-if [[ -n "${SKIP_CHOWN_CONFIG}" ]]; then
-  CHANGE_CONFIG_DIR_OWNERSHIP=false
-fi
+  if [ "${CHANGE_CONFIG_DIR_OWNERSHIP,,}" = "true" ]; then
+    find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {}
+  fi
 
-if [ "${CHANGE_CONFIG_DIR_OWNERSHIP,,}" = "true" ]; then
-  find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {}
-fi
-
-# Will change all files in directory to be readable by group
-if [ "${CHANGE_DIR_RIGHTS,,}" = "true" ]; then
-  chgrp -R "${GROUP}" /data
-  chmod -R g+rX /data
+  # Will change all files in directory to be readable by group
+  if [ "${CHANGE_DIR_RIGHTS,,}" = "true" ]; then
+    chgrp -R "${GROUP}" /data
+    chmod -R g+rX /data
+  fi
 fi
 
 # Preferences
