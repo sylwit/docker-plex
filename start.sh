@@ -64,7 +64,7 @@ setPreference(){
   if [ -z "$(getPreference "$preference_key")" ]; then
     xmlstarlet ed --inplace --insert "Preferences" --type attr -n "$preference_key" -v "$preference_val" "${PLEX_PREFERENCES}"
   else
-    xmlstarlet ed --inplace --update "/Preferences[@$preference_key]" -v "$preference_val" "${PLEX_PREFERENCES}"
+    xmlstarlet ed --inplace --update "/Preferences[@$preference_key]/$preference_key" -v "$preference_val" "${PLEX_PREFERENCES}"
   fi
 }
 
