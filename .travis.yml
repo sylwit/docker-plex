@@ -1,8 +1,6 @@
 sudo: required
 
-language: node_js
-node_js:
-  - "6"
+language: ruby
 
 services:
   - docker
@@ -21,6 +19,9 @@ after_success:
   - export PLEX_VERSION=plexpass
   - docker docker build --rm --no-cache --pull -t $REPO:plexpass .
   - docker push $REPO:plexpass
+  
+script:
+- bundle exec rake test
 
 #travis encrypt DOCKER_EMAIL=email@gmail.com
 #travis encrypt DOCKER_USER=username
