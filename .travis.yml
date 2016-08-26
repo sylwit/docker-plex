@@ -21,12 +21,15 @@ script:
 
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=timhaak/plex-test
-  - docker build --rm --no-cache --pull -t $REPO:latest .
-  - docker push $REPO:latest
+  - export PASS_REPO=timhaak/plex
+#  - docker build --rm --no-cache --pull -t $PASS_REPO:latest .
+#  - docker push $PASS_REPO:latest
+  - export PLEX_PASS_REPO=timhaak/plexpass
   - export PLEX_VERSION=plexpass
-  - docker build --rm --no-cache --pull -t $REPO:plexpass .
-  - docker push $REPO:plexpass
+  - docker build --rm --no-cache --pull -t $PLEX_PASS_REPO:latest .
+  - docker tag $PLEX_PASS_REPO:latest $PASS_REPO:plexpass
+  - docker push $PLEX_PASS_REPO:plexpass
+  - docker push $PASS_REPO:plexpass
 
 #travis encrypt DOCKER_EMAIL=email@gmail.com
 #travis encrypt DOCKER_USER=username
