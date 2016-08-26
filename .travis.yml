@@ -1,0 +1,25 @@
+sudo: required
+
+language: ruby
+
+services:
+  - docker
+
+env:
+  global:
+  - secure: xCZwZZapPbohR+xiEj4mPmEE8Bojj2XdhOMfmGRjmHsgwi+dFuMzirvVo9UwWNGCPu9EDTLGXf0BWKD+yyQI80MdyLfEIqyW2RlMCSddOfbTBv6YH7to9iwLQjc8iBv+idKr+RadH+qoHZqneU7TzEovY7xbefUL21i6Zv14B0KS2OxEeMBBrwjHd33ikQjA1HoZxkSp0q0ejtoKFG8PXCbIngprbnQdOCUELnLSBdI0eoPx4U7P4TaN127QWTNQQ+q05a9Za5TlVXk6PZ5241ZMOpwr9LoWgTaUMdMjwuuCN6fEsg8m8bqZ79UEOWpsDJoRw3q5v0G7++xycP1WBdnzIRN7lGx0bsUnvBPb9lKJ7kH6SL0IyCkM04S3+UsHnYD4Rlxr2exSVAMb5HSWJhWpyMZe81kr11p/ECb2qdh/onRlbIXahJBoO0WQb9Z98xQEIHiYg98//D6wwtG2GaUvSHNd9scjRnKxehhn4pFjotDjd0PABcpZ/Hzr2xmdMaethV7FSTyQVwqjy5eonNDptWJ94QhXgiaOVIWTj2rCNKuywHB/7yDBigC8Dq8/VgF6Vu5Gp/S7QDf6pO/CQiR7Lu4BkUJuxMuV5FZVJTC19xe4l9T2712FIxJnW85NYfcWpew0hWr+1aSgG61mnVZOmrfQsmHbW8tW2B+HfYg=
+  - secure: M2BxceSgoCd8WicB2KV7h+SiojAwLHdf+DarFoJdeLq4GEqP8fpBd2egjx2HjPXn9UM45wrzjzHlnWesbwITWtncDD8liDfG6pMDy2ka2osIMvNqU3FMhfzq2Q0rBN/orMx/RPnX137qrNMsRfe4WYh6Kz7uwocvM2CuideS499lovub2y1tNslx/RHmP+8wnvWrVVQkIyUQkDzOZT79ALOstkkLmIjkfEfsoi3hNcwKNOjnWxWnmAa3zWoX4ivZYO3j20rpgdcAi+EO+9D0aqWfjR44uIgGbJfpa3z2SS7owV/bOsOLpEy1wWqEAS0vswoFrBzRKoQrznMAPxbiW3fStJYB7DohkYGjUY8o1CShxEG+pG9C0+1h2GkCQ0Sixh3UHMlbQrKsUL2BmknVkkisTOkY5S9VW74+MoZIiHn55fDGKOJy12wmIorGVFCx5d9pdjM5CWSun6cCwb2LBYqOuPiHN2+JSNd0MtmyW3PQvVQzf2C6pN6vuARW8fRe+oQaY6N+l5oBVDZrcRNI2KF2tpi//qecYucaRtyrRMO6cLXggLJlTCumnV/Uaq40yyzjF9uoA6t+QpaGr9fXtB7oXEFhVdwszABSuYTbWmICYr+V6/xmN8bd4Gx94luT0jdQ39Xso6FCu+yOlh7YRDt+l2bGQE2tBf2xqoO9SIk=
+  - secure: hBHpGC5peK8jWgbqIJLLwjdJNkZBg/OspwIAxfefeX/hdtDIiyA22Awk7P4pCoJt+J5mL2j1O7qtyVblv2JwT8UPK1tAmwu2PD2lGNFoF4j0MJcAK2DB42FSJimnc/kQhHa0u8zRjvK3ns4LLKwMo4xpT/O6RD9oawNkpnE21PPgECkJYuxvJ4bouTfXuJG4gcySNoQcnN+zJAsdFnjJ7YXzTqiyCj6OcBXmx0ijh3XGag7PUsHRv3+MdICrZeLOQxnJlsUMu7nBRnlDT9dzYAJXF1Qi6Rm7lsZqOeCISBt8EPgNhd35EKmD4gcHEvVArqSjV6aDeve6A5gtFwdIBRAAlDccNCAc4BWyod621/Lt2ncjItccJHIyKP6Nr4OoxaWHhbP7AMkpOPTe3+urYtUVufmMvzaociHHvJFxzyedw8j8QWqc6IcNTfIlviZetgVOlz8lNFafK7c1/XAeKI1vx/VrYrRqBQz90iaQUQhrc05D/PuEYyx2Ox6FJpjgy1eScmcV38RKh8z62B+5rgXFtqJRmdU/+FO3+WffAt2sWBcqdABEcD2Y1mIcvMO8AmS2WeG0J4EfCpcowTVM6P2wl4+RVCFQphHMthBFv72Giz/frHUKBNNYqyGt/9/VRrae/c0ebPkCNPVV1zY4TTUL7Smqcc/JmxVR8guqOk0=
+
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=timhaak/plex-test
+  - docker docker build --rm --no-cache --pull -t $REPO:latest .
+  - docker push $REPO:latest
+  - export PLEX_VERSION=plexpass
+  - docker docker build --rm --no-cache --pull -t $REPO:plexpass .
+  - docker push $REPO:plexpass
+
+#travis encrypt DOCKER_EMAIL=email@gmail.com
+#travis encrypt DOCKER_USER=username
+#travis encrypt DOCKER_PASS=password
