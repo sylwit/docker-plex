@@ -1,0 +1,14 @@
+plex:
+  container_name: plex
+  image: timhaak/plex
+  restart: unless-stopped
+  ports:
+    - 80:32400
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - ./data/config:/config
+    - ./data/data:/data
+  environment:
+    - PLEX_USERNAME=username
+    - PLEX_PASSWORD=password
+    - PLEX_TOKEN=token
