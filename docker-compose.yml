@@ -3,7 +3,7 @@ plex:
   image: timhaak/plex
   restart: unless-stopped
   ports:
-    - 80:32400
+    - 32400:32400
   volumes:
     - /etc/localtime:/etc/localtime:ro
     - ./data/config:/config
