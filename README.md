@@ -1,8 +1,6 @@
 # docker plex
 This is a Dockerfile to set up ([https://plex.tv/](https://plex.tv/) "Plex Media Server") - ([https://plex.tv/](https://plex.tv/))
 
-If you've have paid for plexpass goto [https://github.com/timhaak/docker-plexpass](https://github.com/timhaak/docker-plexpass)
-
 ## Instructions
 ### Getting the docker image
 Build from docker file
