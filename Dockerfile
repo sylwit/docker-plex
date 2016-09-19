@@ -4,11 +4,6 @@ MAINTAINER Tim Haak <tim@haak.co>
 ENV DEBIAN_FRONTEND="noninteractive" \
     TERM="xterm"
 
-ENV PLEX_PPA_DIST="wheezy" \
-    PLEX_PASS_PPA="plexpass"
-
-ARG PLEX_VERSION='wheezy'
-
 RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
     echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache && \
     apt-get -q update && \
@@ -16,15 +11,32 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
     apt-get install -qy \
       iproute2 \
       ca-certificates \
+      ffmpeg \
+      jq \
       openssl \
       xmlstarlet \
       curl \
       sudo \
+      wget \
     && \
-    echo "deb http://shell.ninthgate.se/packages/debian ${PLEX_VERSION} main" > /etc/apt/sources.list.d/plexmediaserver.list && \
-    curl http://shell.ninthgate.se/packages/shell.ninthgate.se.gpg.key | apt-key add - && \
-    apt-get -q update && \
-    apt-get install -qy plexmediaserver && \
+    apt-get -y autoremove && \
+    apt-get -y clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
+
+ARG PLEX_PASS='false'
+
+ENV PLEX_URL="https://plex.tv/api/downloads/1.json" \
+    PLEX_PASS_URL="https://plex.tv/api/downloads/1.json?channel=plexpass"
+
+    RUN if [ "${PLEX_PASS}" = "true" ]; then PLEX_URL=${PLEX_PASS_URL}; fi && \
+    PLEX_JSON=$(curl -s $PLEX_URL | jq -r '.computer.Linux.releases[] | select(.build=="linux-ubuntu-x86_64" and .distro=="ubuntu") | .') && \
+    PLEX_DOWNLOAD=$(echo $PLEX_JSON | jq -r '.url') && \
+    PLEX_CHECKSUM=$(echo $PLEX_JSON | jq -r '.checksum') && \
+    wget -O plex_server.deb $PLEX_DOWNLOAD && \
+    echo "$PLEX_CHECKSUM *plex_server.deb" | sha1sum -c - && \
+    dpkg -i plex_server.deb && \
+    rm plex_server.deb && \
     apt-get -y autoremove && \
     apt-get -y clean && \
     rm -rf /var/lib/apt/lists/* && \

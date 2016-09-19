@@ -29,13 +29,13 @@ if [ "$(id -u)" -eq 0 -a "$(id -g)" -eq 0 ]; then
   fi
 
   if [ "${CHANGE_CONFIG_DIR_OWNERSHIP,,}" = "true" ]; then
-    find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {}
+    find /config ! -user plex -print0 | xargs -0 -I{} chown -R plex: {} &
   fi
 
   # Will change all files in directory to be readable by group
   if [ "${CHANGE_DIR_RIGHTS,,}" = "true" ]; then
-    chgrp -R "${GROUP}" /data
-    chmod -R g+rX /data
+    chgrp -R "${GROUP}" /data &
+    chmod -R g+rX /data &
   fi
 fi
 

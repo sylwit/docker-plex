@@ -25,8 +25,7 @@ after_success:
 #  - docker build --rm --no-cache --pull -t $PASS_REPO:latest .
 #  - docker push $PASS_REPO:latest
   - export PLEX_PASS_REPO=timhaak/plexpass
-  - export PLEX_VERSION=plexpass
-  - docker build --build-arg PLEX_VERSION=${PLEX_VERSION} --rm --no-cache --pull -t $PLEX_PASS_REPO:latest .
+  - docker build --build-arg PLEX_PASS=true --rm --no-cache --pull -t $PLEX_PASS_REPO:latest .
   - docker tag $PLEX_PASS_REPO:latest $PASS_REPO:plexpass
   - docker push $PLEX_PASS_REPO:latest
   - docker push $PASS_REPO:plexpass
