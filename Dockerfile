@@ -33,7 +33,7 @@ ARG PLEX_USER_PASS=''
 RUN if [ "${PLEX_PASS}" = "true" ]; then PLEX_TYPE_FLAG="--email=${PLEX_USER_NAME} --pass=${PLEX_USER_PASS}" ; fi && \
     git clone --depth 1 https://github.com/mrworf/plexupdate.git /plexupdate && \
     /plexupdate/plexupdate.sh ${PLEX_TYPE_FLAG} -a -d  && \
-    apt-get purge git &&\
+    apt-get -y purge git &&\
     apt-get -y autoremove && \
     apt-get -y clean && \
     rm -rf /var/lib/apt/lists/* && \
