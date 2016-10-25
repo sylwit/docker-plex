@@ -1,35 +1,26 @@
 sudo: required
-
 language: node_js
 node_js:
-  - "6"
-
+- '6'
 services:
-  - docker
-
+- docker
 env:
   global:
   - secure: xCZwZZapPbohR+xiEj4mPmEE8Bojj2XdhOMfmGRjmHsgwi+dFuMzirvVo9UwWNGCPu9EDTLGXf0BWKD+yyQI80MdyLfEIqyW2RlMCSddOfbTBv6YH7to9iwLQjc8iBv+idKr+RadH+qoHZqneU7TzEovY7xbefUL21i6Zv14B0KS2OxEeMBBrwjHd33ikQjA1HoZxkSp0q0ejtoKFG8PXCbIngprbnQdOCUELnLSBdI0eoPx4U7P4TaN127QWTNQQ+q05a9Za5TlVXk6PZ5241ZMOpwr9LoWgTaUMdMjwuuCN6fEsg8m8bqZ79UEOWpsDJoRw3q5v0G7++xycP1WBdnzIRN7lGx0bsUnvBPb9lKJ7kH6SL0IyCkM04S3+UsHnYD4Rlxr2exSVAMb5HSWJhWpyMZe81kr11p/ECb2qdh/onRlbIXahJBoO0WQb9Z98xQEIHiYg98//D6wwtG2GaUvSHNd9scjRnKxehhn4pFjotDjd0PABcpZ/Hzr2xmdMaethV7FSTyQVwqjy5eonNDptWJ94QhXgiaOVIWTj2rCNKuywHB/7yDBigC8Dq8/VgF6Vu5Gp/S7QDf6pO/CQiR7Lu4BkUJuxMuV5FZVJTC19xe4l9T2712FIxJnW85NYfcWpew0hWr+1aSgG61mnVZOmrfQsmHbW8tW2B+HfYg=
   - secure: M2BxceSgoCd8WicB2KV7h+SiojAwLHdf+DarFoJdeLq4GEqP8fpBd2egjx2HjPXn9UM45wrzjzHlnWesbwITWtncDD8liDfG6pMDy2ka2osIMvNqU3FMhfzq2Q0rBN/orMx/RPnX137qrNMsRfe4WYh6Kz7uwocvM2CuideS499lovub2y1tNslx/RHmP+8wnvWrVVQkIyUQkDzOZT79ALOstkkLmIjkfEfsoi3hNcwKNOjnWxWnmAa3zWoX4ivZYO3j20rpgdcAi+EO+9D0aqWfjR44uIgGbJfpa3z2SS7owV/bOsOLpEy1wWqEAS0vswoFrBzRKoQrznMAPxbiW3fStJYB7DohkYGjUY8o1CShxEG+pG9C0+1h2GkCQ0Sixh3UHMlbQrKsUL2BmknVkkisTOkY5S9VW74+MoZIiHn55fDGKOJy12wmIorGVFCx5d9pdjM5CWSun6cCwb2LBYqOuPiHN2+JSNd0MtmyW3PQvVQzf2C6pN6vuARW8fRe+oQaY6N+l5oBVDZrcRNI2KF2tpi//qecYucaRtyrRMO6cLXggLJlTCumnV/Uaq40yyzjF9uoA6t+QpaGr9fXtB7oXEFhVdwszABSuYTbWmICYr+V6/xmN8bd4Gx94luT0jdQ39Xso6FCu+yOlh7YRDt+l2bGQE2tBf2xqoO9SIk=
   - secure: hBHpGC5peK8jWgbqIJLLwjdJNkZBg/OspwIAxfefeX/hdtDIiyA22Awk7P4pCoJt+J5mL2j1O7qtyVblv2JwT8UPK1tAmwu2PD2lGNFoF4j0MJcAK2DB42FSJimnc/kQhHa0u8zRjvK3ns4LLKwMo4xpT/O6RD9oawNkpnE21PPgECkJYuxvJ4bouTfXuJG4gcySNoQcnN+zJAsdFnjJ7YXzTqiyCj6OcBXmx0ijh3XGag7PUsHRv3+MdICrZeLOQxnJlsUMu7nBRnlDT9dzYAJXF1Qi6Rm7lsZqOeCISBt8EPgNhd35EKmD4gcHEvVArqSjV6aDeve6A5gtFwdIBRAAlDccNCAc4BWyod621/Lt2ncjItccJHIyKP6Nr4OoxaWHhbP7AMkpOPTe3+urYtUVufmMvzaociHHvJFxzyedw8j8QWqc6IcNTfIlviZetgVOlz8lNFafK7c1/XAeKI1vx/VrYrRqBQz90iaQUQhrc05D/PuEYyx2Ox6FJpjgy1eScmcV38RKh8z62B+5rgXFtqJRmdU/+FO3+WffAt2sWBcqdABEcD2Y1mIcvMO8AmS2WeG0J4EfCpcowTVM6P2wl4+RVCFQphHMthBFv72Giz/frHUKBNNYqyGt/9/VRrae/c0ebPkCNPVV1zY4TTUL7Smqcc/JmxVR8guqOk0=
-
+  - secure: GikU7yywl+0V7tLpxZMHRbYHVn9y0bun/5bjCT/1uirL+OsriWirMBLLQHmXqFE3O5qiKv3fH4DexLJhAgkv0JRr44RWjWZSkI+cs/Uz+fcgZ/s9ynkxeI2lhlk+ByiqbjWgN0qO8OCclmJjB7ay7B9TFhFttk5oK+BElg5p2PDLrzBbyVAexTVaf5OO+neULTPhe9YEnUraPh3u5qTxAsk/PmFcKsMEo+eGxsnJmkxpk2WUjI1pP82zpGwpNqgPPCN+u5k8BHF/NFbKGxa2ODt0ScEG67tt2eO9bUsCnPWOJ+Jkf5tzICMf101y6fYnUxrBT3+6GZEHV+a9u0nghFC2ZoFMc2zl+HfX/kXhMka+9WJCF+AIqYVL3t5jlP/AgjYZL4bPFewCISjXDBAkYgGIe1pHT1XjBzS/1SQ5ghXI6Ed7J7s6O6lJI+Woi739SrFJigD3ExLydEGb2cf2m5en+bTUDWg/0btaA1z+nLWEZfNDgW84xhmsMW1Gu5u1Lt07yYY5nPBylKjJ/cAKcFqolnAQa1bbJx2CaGNNQBApdCtIh7AU1uxkl9LY+vhIYU0RVINQHn1uUXNzj/tAXXMYP1olls0WYP8PPgc06358rL3K1UsmIEvNwNfIYh0YWy8VRzC0FmR1Fqb8U4+S5C7eqL0KRNO+8qii5aH/fi4=
+  - secure: mATl1qiHH2BWLr3bAiWeVAEQ7av4Wjafwb/7iVNBtplf301IVxO94NfRerMsE8ZNrACeBeREycRhPYzPNPpLs5BWLWMwTIjKlP2SfUSSmSY9tiKpgAlm7Up/5Jhkl1NgxzxaukDA+w/o1hzYVHmd31PATCz7yyD6jzhQKc0eugkNGYlBngQ6aaGRpcU725/xMGx5rrs2DPBIy1i6nAt6bXsM85+wGAAPoGna7KrByJ5Kr35kKz8yTbaWRAC29I7b4cKUN+PpspQEpDTCicmMn3PJk+8z99ZUKMTv4tFZ+o+j26hzPTlHpTnBcNPcP43LlG5OPCZ+dHLyCqM/8NtbA8PagNtkXLuQAs29J7ALJbCGNnDLWgxnkRIHCs14JsV8Y9vXD3ELjumT8s+ymISi2nIit6Mvcz5KoUTvvN+DVEbbTkb5Ff+0nA1b1wA5icQgrYLuwig3l1YNQP+GVYB/VSWvcLjpxZS6DN6xXQ8xcYwp4j6Y0PSS/Nfh0Fjm2hIgEq0nLfcDlvej/CYqss1BfCwYgmDtyggFx5iaAR+HXQIki9b2h9wVkKYiKil2M/0GsBHJXG+SSUp3fQ4BLLJKJdKJxdmG0yWVJQtKp0A7b5JcssVHBc0kTrCx74b5Skqvy96oAcyUMDF/luFd2ZRMSO+fSanCW3am4ZUsrBTvs+o=
 install:
-  - echo "install nothing!" # put your normal pre-testing installs here
-
+- echo "install nothing!"
 script:
-  - echo "no tests!" # put your normal testing scripts here
-
+- echo "no tests!"
 after_success:
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - export PASS_REPO=timhaak/plex
-#  - docker build --rm --no-cache --pull -t $PASS_REPO:latest .
-#  - docker push $PASS_REPO:latest
-  - export PLEX_PASS_REPO=timhaak/plexpass
-  - docker build --build-arg PLEX_PASS=true --rm --no-cache --pull -t $PLEX_PASS_REPO:latest .
-  - docker tag $PLEX_PASS_REPO:latest $PASS_REPO:plexpass
-  - docker push $PLEX_PASS_REPO:latest
-  - docker push $PASS_REPO:plexpass
-
-#travis encrypt DOCKER_EMAIL=email@gmail.com
-#travis encrypt DOCKER_USER=username
-#travis encrypt DOCKER_PASS=password
+- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+- export PASS_REPO=timhaak/plex
+- export PLEX_PASS_REPO=timhaak/plexpass
+- docker build --build-arg PLEX_PASS=true --build-arg PLEX_USER_NAME=$PLEX_USER_NAME --build-arg PLEX_USER_PASS=$PLEX_USER_PASS --rm --no-cache --pull -t $PLEX_PASS_REPO:latest
+  .
+- docker tag $PLEX_PASS_REPO:latest $PASS_REPO:plexpass
+- docker push $PLEX_PASS_REPO:latest
+- docker push $PASS_REPO:plexpass

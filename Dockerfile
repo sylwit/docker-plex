@@ -2,7 +2,8 @@ FROM ubuntu:16.04
 MAINTAINER Tim Haak <tim@haak.co>
 
 ENV DEBIAN_FRONTEND="noninteractive" \
-    TERM="xterm"
+    TERM="xterm" \
+    PLEX_TYPE_FLAG="-p"
 
 RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
     echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache && \
@@ -12,6 +13,7 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
       iproute2 \
       ca-certificates \
       ffmpeg \
+      git \
       jq \
       openssl \
       xmlstarlet \
@@ -25,18 +27,13 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup &&\
     rm -rf /tmp/*
 
 ARG PLEX_PASS='false'
+ARG PLEX_USER_NAME=''
+ARG PLEX_USER_PASS=''
 
-ENV PLEX_URL="https://plex.tv/api/downloads/1.json" \
-    PLEX_PASS_URL="https://plex.tv/api/downloads/1.json?channel=plexpass"
-
-    RUN if [ "${PLEX_PASS}" = "true" ]; then PLEX_URL=${PLEX_PASS_URL}; fi && \
-    PLEX_JSON=$(curl -s $PLEX_URL | jq -r '.computer.Linux.releases[] | select(.build=="linux-ubuntu-x86_64" and .distro=="ubuntu") | .') && \
-    PLEX_DOWNLOAD=$(echo $PLEX_JSON | jq -r '.url') && \
-    PLEX_CHECKSUM=$(echo $PLEX_JSON | jq -r '.checksum') && \
-    wget -O plex_server.deb $PLEX_DOWNLOAD && \
-    echo "$PLEX_CHECKSUM *plex_server.deb" | sha1sum -c - && \
-    dpkg -i plex_server.deb && \
-    rm plex_server.deb && \
+RUN if [ "${PLEX_PASS}" = "true" ]; then PLEX_TYPE_FLAG="--email=${PLEX_USER_NAME} --pass=${PLEX_USER_PASS}" ; fi && \
+    git clone --depth 1 https://github.com/mrworf/plexupdate.git /plexupdate && \
+    /plexupdate/plexupdate.sh ${PLEX_TYPE_FLAG} -a -d  && \
+    apt-get purge git &&\
     apt-get -y autoremove && \
     apt-get -y clean && \
     rm -rf /var/lib/apt/lists/* && \
