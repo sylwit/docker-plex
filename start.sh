@@ -68,9 +68,11 @@ fi
 # Set the PlexOnlineToken to PLEX_TOKEN if defined,
 # otherwise get plex token if PLEX_USERNAME and PLEX_PASSWORD are defined,
 # otherwise account must be manually linked via Plex Media Server in Settings > Server
-echo "PLEX_TOKEN :"${PLEX_TOKEN}
-echo "PLEX_USERNAME :"${PLEX_USERNAME}
-echo "PLEX_PASSWORD :"${PLEX_PASSWORD}
+if [ "${DEBUG,,}" = "true" ]; then
+  echo "PLEX_TOKEN :"${PLEX_TOKEN}
+  echo "PLEX_USERNAME :"${PLEX_USERNAME}
+  echo "PLEX_PASSWORD :"${PLEX_PASSWORD}
+fi
 if [ -n "${PLEX_TOKEN}" ]; then
   setPreference PlexOnlineToken ${PLEX_TOKEN}
 elif [ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && [ -z "$(getPreference "PlexOnlineToken")" ]; then
@@ -86,9 +88,11 @@ elif [ -n "${PLEX_USERNAME}" ] && [ -n "${PLEX_PASSWORD}" ] && [ -z "$(getPrefer
     -H 'X-Plex-Client-Identifier: XXXX' --compressed | sed -n 's/.*<authentication-token>\(.*\)<\/authentication-token>.*/\1/p')
 fi
 
-echo "AFTER PLEX_TOKEN :"${PLEX_TOKEN}
-echo "PLEX_USERNAME :"${PLEX_USERNAME}
-echo "PLEX_PASSWORD :"${PLEX_PASSWORD}
+if [ "${DEBUG,,}" = "true" ]; then
+  echo "AFTER PLEX_TOKEN :"${PLEX_TOKEN}
+  echo "PLEX_USERNAME :"${PLEX_USERNAME}
+  echo "PLEX_PASSWORD :"${PLEX_PASSWORD}
+fi
 
 if [ "${PLEX_TOKEN}" ]; then
   setPreference PlexOnlineToken "${PLEX_TOKEN}"
