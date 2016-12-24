@@ -47,7 +47,7 @@ ENV RUN_AS_ROOT="true" \
     HOME="/config" \
     PLEX_DISABLE_SECURITY=1
 
-EXPOSE 32400
+EXPOSE 32400 1900/udp 3005 5353/udp 8324 32410/udp 32412/udp 32413/udp 32414/udp 32469 
 
 COPY ./Preferences.xml /Preferences.xml
 COPY ./start.sh /start.sh
