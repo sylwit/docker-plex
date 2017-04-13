@@ -6,7 +6,7 @@ This is a Dockerfile to set up ([https://plex.tv/](https://plex.tv/) "Plex Media
 Build from docker file
 
 ```
-git clone git@github.com:timhaak/docker-plex.git
+git clone https://github.com/timhaak/docker-plex.git
 cd docker-plex
 docker build -t timhaak/plex .
 ```
